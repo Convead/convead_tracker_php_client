@@ -89,7 +89,6 @@ class ConveadTracker {
     if ($product_name) $post["properties"]["product_name"] = (string) $product_name;
     if ($product_url) $post["properties"]["product_url"] = (string) $product_url;
     
-    $post = $this->post_encode($post);
     return $this->send($this->getUrl(), $post);
   }
 
@@ -111,7 +110,6 @@ class ConveadTracker {
     if ($product_name) $post["properties"]["product_name"] = (string) $product_name;
     if ($product_url) $post["properties"]["product_url"] = (string) $product_url;
 
-    $post = $this->post_encode($post);
     return $this->send($this->getUrl(), $post);
   }
 
@@ -131,7 +129,6 @@ class ConveadTracker {
     if ($product_name) $post["properties"]["product_name"] = (string) $product_name;
     if ($product_url) $post["properties"]["product_url"] = (string) $product_url;
 
-    $post = $this->post_encode($post);
     return $this->send($this->getUrl(), $post);
   }
 
@@ -162,7 +159,6 @@ class ConveadTracker {
     unset($post["url"]);
     unset($post["host"]);
     unset($post["path"]);
-    $post = $this->post_encode($post);
 
     return $this->send($this->getUrl(), $post);
   }
@@ -185,8 +181,6 @@ class ConveadTracker {
 
     $post["properties"] = $properties;
 
-    $post = $this->post_encode($post);
-
     return $this->send($this->getUrl(), $post);
   }
 
@@ -202,8 +196,6 @@ class ConveadTracker {
     $properties["key"] = (string) $key;
     $post["properties"] = $properties;
 
-    $post = $this->post_encode($post);
-
     return $this->send($this->getUrl(), $post);
   }
 
@@ -214,7 +206,6 @@ class ConveadTracker {
   public function eventUpdateInfo() {
     $post = $this->getDefaultPost();
     $post["type"] = "update_info";
-    $post = $this->post_encode($post);
 
     return $this->send($this->getUrl(), $post);
   }
@@ -232,8 +223,6 @@ class ConveadTracker {
     $post["title"] = (string) $title;
     $post["url"] = "http://" . $this->url . $url;
     $post["path"] = $url;
-
-    $post = $this->post_encode($post);
 
     return $this->send($this->getUrl(), $post);
   }
@@ -287,6 +276,8 @@ class ConveadTracker {
 
   private function send($url, $post = false, $method = 'POST') {
     $this->put_log($url, $method, $post);
+
+    $post = $this->post_encode($post);
 
     if (isset($_COOKIE['convead_track_disable']))
       return 'Convead tracking disabled';
