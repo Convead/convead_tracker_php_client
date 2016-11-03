@@ -146,7 +146,7 @@ class ConveadTracker {
     ]
    * @return boolean
    */
-  public function eventOrder($order_id, $revenue = false, $order_array = false) {
+  public function eventOrder($order_id, $revenue = false, $order_array = false, $state = false) {
     $post = $this->getDefaultPost();
     $post["type"] = "purchase";
     $properties = array();
@@ -155,6 +155,8 @@ class ConveadTracker {
     if ($revenue !== false) $properties["revenue"] = $revenue;
 
     if (is_array($order_array)) $properties["items"] = $order_array;
+
+    if ($state !== false) $properties["state"] = $state;
 
     $post["properties"] = $properties;
     unset($post["url"]);
