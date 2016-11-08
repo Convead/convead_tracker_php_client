@@ -135,6 +135,7 @@ class ConveadTracker {
   /**
    * 
    * @param type $order_id - ID заказа в интернет-магазине
+   * @param type $state - статус заказа
    * @param type $revenue - общая сумма заказа
    * @param type $order_array массив вида:
     [
@@ -143,7 +144,38 @@ class ConveadTracker {
     ]
    * @return boolean
    */
-  public function eventOrder($order_id, $state = false, $revenue = false, $order_array = false) {
+  public function eventOrderUpdate($order_id, $state, $revenue = false, $order_array = false) {
+    $post = $this->getDefaultPost();
+    $post["type"] = "order_update";
+    $properties = array();
+    $properties["order_id"] = (string) $order_id;
+    $properties["state"] = (string) $state;
+
+    if ($revenue !== false) $properties["revenue"] = $revenue;
+
+    if (is_array($order_array)) $properties["items"] = $order_array;
+
+    $post["properties"] = $properties;
+    unset($post["url"]);
+    unset($post["host"]);
+    unset($post["path"]);
+
+    return $this->send($this->getUrl(), $post);
+  }
+
+  /**
+   * 
+   * @param type $order_id - ID заказа в интернет-магазине
+   * @param type $revenue - общая сумма заказа
+   * @param type $order_array массив вида:
+    [
+        {product_id: <product_id>, qnt: <product_count>, price: <product_price>},
+        {...}
+    ]
+   * @param type $state - статус заказа
+   * @return boolean
+   */
+  public function eventOrder($order_id, $revenue = false, $order_array = false, $state = false) {
     $post = $this->getDefaultPost();
     $post["type"] = "purchase";
     $properties = array();
