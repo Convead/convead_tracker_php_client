@@ -143,7 +143,7 @@ class ConveadTracker {
     ]
    * @return boolean
    */
-  public function eventOrder($order_id, $revenue = false, $order_array = false, $state = false) {
+  public function eventOrder($order_id, $state = false, $revenue = false, $order_array = false) {
     $post = $this->getDefaultPost();
     $post["type"] = "purchase";
     $properties = array();
@@ -252,26 +252,26 @@ class ConveadTracker {
   }
 
   private function json_fix($data) {
-      # Process arrays
-      if (is_array($data)) {
-        $new = array();
-        foreach ($data as $k => $v) {
-          $new[$this->json_fix($k)] = $this->json_fix($v);
-        }
-        $data = $new;
+    # Process arrays
+    if (is_array($data)) {
+      $new = array();
+      foreach ($data as $k => $v) {
+        $new[$this->json_fix($k)] = $this->json_fix($v);
       }
-      # Process objects
-      else if (is_object($data)) {
-        $datas = get_object_vars($data);
-        foreach ($datas as $m => $v) {
-          $data->$m = $this->json_fix($v);
-        }
+      $data = $new;
+    }
+    # Process objects
+    else if (is_object($data)) {
+      $datas = get_object_vars($data);
+      foreach ($datas as $m => $v) {
+        $data->$m = $this->json_fix($v);
       }
-      # Process strings
-      else if (is_string($data)) {
-        $data = iconv('cp1251', 'utf-8', $data);
-      }
-      return $data;
+    }
+    # Process strings
+    else if (is_string($data)) {
+      $data = iconv('cp1251', 'utf-8', $data);
+    }
+    return $data;
   }
 
   private function send($url, $post = false, $method = 'POST') {
