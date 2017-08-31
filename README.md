@@ -62,3 +62,17 @@ $properties = array('phone'=>$phone); // Набор передаваемых д�
 
 $convead->eventCustom($key, $properties);
 ```
+
+**Пример передачи статусов заказов**
+```php
+include_once('ConveadTracker.php');
+$app_key      = 'API_KEY'; // APP-ключ вашего аккаунта, можно найти здесь: http://take.ms/Ejv3q
+$host         = $_SERVER['HTTP_HOST']; // Должен совпадать с вашим доменом, указанным в настройках аккаунта
+
+$order_id = 123; // id заказа
+$state = 'shipped'; // статус заказа
+...
+
+$convead = new ConveadTracker($app_key, $host);
+$convead->webHookOrderUpdate($order_id, $state);
+```
