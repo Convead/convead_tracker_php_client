@@ -58,9 +58,8 @@ $convead->eventUpdateInfo();
 **Пример отправки кастомного евента**
 ```php
 $key        = 'callback'; // Ключ кастомного евента
-$properties = array('phone'=>$phone); // Набор передаваемых данных
 
-$convead->eventCustom($key, $properties);
+$convead->eventCustom($key);
 ```
 
 **Пример передачи статусов заказов**
